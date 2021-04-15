@@ -1,0 +1,39 @@
+{
+  "name": "pcmt/customer-dataset-bundle",
+  "description": "Custom Dataset Bundle for PCMT",
+  "type": "library",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "Josh Zamor",
+      "email": "josh.zamor@villagereach.org"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "PcmtCustomDatasetBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PcmtCustomDatasetBundle\\Tests\\": "src/Tests/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://gitlab.com/pcmt/shared-bundle.git",
+      "branch": "master",
+      "no-api": true
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "akeneo/pim-community-dev": "^5.0",
+    "pcmt/shared-bundle": "dev-master@dev"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8",
+    "symplify/easy-coding-standard": "^6.1"
+  }
+}
