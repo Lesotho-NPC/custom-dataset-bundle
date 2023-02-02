@@ -1,5 +1,5 @@
 {
-  "name": "pcmt/customer-dataset-bundle",
+  "name": "pcmt/custom-dataset-bundle",
   "description": "Custom Dataset Bundle for PCMT",
   "type": "library",
   "license": "GPL-3.0-only",
