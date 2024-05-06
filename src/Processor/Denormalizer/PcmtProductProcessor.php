@@ -10,10 +10,12 @@ declare(strict_types=1);
 namespace PcmtCustomDatasetBundle\Processor\Denormalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor as OriginalProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -36,17 +38,32 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *******************************************************************************/
 class PcmtProductProcessor extends OriginalProcessor
 {
-    /** @var FindProductToImport */
+    /**
+     * @var FindProductToImport
+     */
     private $findProductToImport;
 
-    /** @var AddParent */
+    /**
+     * @var AddParent
+     */
     private $addParent;
 
-    /** @var AttributeFilterInterface */
+    /**
+     * @var AttributeFilterInterface
+     */
     private $productAttributeFilter;
 
-    /** @var MediaStorer */
+    /**
+     * @var MediaStorer
+     */
     private $mediaStorer;
+
+    /**
+     * @var RemoveParentInterface
+     */
+    private $removeParent;
+
+    private CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -57,7 +74,9 @@ class PcmtProductProcessor extends OriginalProcessor
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
         AttributeFilterInterface $productAttributeFilter,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        RemoveParentInterface $removeParent,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
     ) {
         parent::__construct(
             $repository,
@@ -68,7 +87,9 @@ class PcmtProductProcessor extends OriginalProcessor
             $detacher,
             $productFilter,
             $productAttributeFilter,
-            $mediaStorer
+            $mediaStorer,
+            $removeParent,
+            $cleanLineBreaksInTextAttributes
         );
 
         $this->findProductToImport = $findProductToImport;
@@ -77,19 +98,16 @@ class PcmtProductProcessor extends OriginalProcessor
         $this->mediaStorer = $mediaStorer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process($item): ?ProductInterface
     {
         $itemHasStatus = isset($item['enabled']);
-        if (!isset($item['enabled'])) {
+        if (! isset($item['enabled'])) {
             $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
         }
 
         $identifier = $this->getIdentifier($item);
 
-        if (null === $identifier || '' === $identifier) {
+        if ($identifier === null || $identifier === '') {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
@@ -107,7 +125,7 @@ class PcmtProductProcessor extends OriginalProcessor
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
 
-        if (false === $itemHasStatus && null !== $product->getId()) {
+        if ($itemHasStatus === false && $product->getId() !== null) {
             unset($filteredItem['enabled']);
         }
 
@@ -116,7 +134,7 @@ class PcmtProductProcessor extends OriginalProcessor
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
-            if (empty($filteredItem) && null !== $product->getId()) {
+            if (empty($filteredItem) && $product->getId() !== null) {
                 $this->detachProduct($product);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
@@ -124,7 +142,7 @@ class PcmtProductProcessor extends OriginalProcessor
             }
         }
 
-        if ('' !== $parentProductModelCode && !$product->isVariant()) {
+        if ($parentProductModelCode !== '' && ! $product->isVariant()) {
             try {
                 $product = $this->addParent->to($product, $parentProductModelCode);
             } catch (\InvalidArgumentException $e) {
@@ -156,12 +174,15 @@ class PcmtProductProcessor extends OriginalProcessor
         return $product;
     }
 
-    private function skipItemAndReturnException(array $item, string $message, ?\Throwable $previousException = null): InvalidItemException
-    {
+    private function skipItemAndReturnException(
+        array $item,
+        string $message,
+        ?\Throwable $previousException = null
+    ): InvalidItemException {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
-        $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
+        $itemPosition = $this->stepExecution !== null ? $this->stepExecution->getSummaryInfo('item_position') : 0;
         $invalidItem = new FileInvalidItem($item, $itemPosition);
 
         return new InvalidItemException($message, $invalidItem, [], 0, $previousException);

@@ -21,13 +21,19 @@ use PHPUnit\Framework\TestCase;
 
 class DatagridViewUpdaterTest extends TestCase
 {
-    /** @var IdentifiableObjectRepositoryInterface|MockObject */
+    /**
+     * @var IdentifiableObjectRepositoryInterface|MockObject
+     */
     private $userRepositoryMock;
 
-    /** @var ObjectUpdaterInterface|MockObject */
+    /**
+     * @var ObjectUpdaterInterface|MockObject
+     */
     private $baseDatagridViewUpdaterMock;
 
-    /** @var DatagridViewUpdater */
+    /**
+     * @var DatagridViewUpdater
+     */
     private $datagridViewUpdater;
 
     protected function setUp(): void
@@ -71,7 +77,7 @@ class DatagridViewUpdaterTest extends TestCase
         return [
             [
                 'datagridView' => (new DatagridViewBuilder())->build(),
-                'data'         => [
+                'data' => [
                     'owner' => UserBuilder::EXAMPLE_USERNAME,
                 ],
             ],

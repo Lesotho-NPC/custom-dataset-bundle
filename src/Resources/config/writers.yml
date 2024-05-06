@@ -5,7 +5,6 @@
 ######################################################################
 
 services:
-
   pcmt_connector.writer.file.xlsx_datagrid_view:
     class: '%pim_connector.writer.file.xlsx.class%'
     arguments:

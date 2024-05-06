@@ -13,9 +13,6 @@ use PcmtCustomDatasetBundle\ArrayConverter\StandardToFlat\DatagridView;
 
 class FakeDatagridView extends DatagridView
 {
-    /**
-     * {@inheritdoc}
-     */
     public function convertProperty($property, $data, array $convertedItem, array $options): array
     {
         return parent::convertProperty($property, $data, $convertedItem, $options);

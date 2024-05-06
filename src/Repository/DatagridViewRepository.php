@@ -14,17 +14,11 @@ use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository as BaseDatagr
 
 class DatagridViewRepository extends BaseDatagridViewRepository implements IdentifiableObjectRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifierProperties()
     {
         return ['label'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($identifier)
     {
         return $this->findOneBy([

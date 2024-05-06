@@ -27,40 +27,64 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PcmtProductProcessorTest extends TestCase
 {
-    /** @var PcmtProductProcessor */
+    /**
+     * @var PcmtProductProcessor
+     */
     protected $processor;
 
-    /** @var IdentifiableObjectRepositoryInterface|MockObject */
+    /**
+     * @var IdentifiableObjectRepositoryInterface|MockObject
+     */
     private $repositoryMock;
 
-    /** @var FindProductToImport|MockObject */
+    /**
+     * @var FindProductToImport|MockObject
+     */
     private $findProductToImportMock;
 
-    /** @var AddParent|MockObject */
+    /**
+     * @var AddParent|MockObject
+     */
     private $addParentMock;
 
-    /** @var ObjectUpdaterInterface|MockObject */
+    /**
+     * @var ObjectUpdaterInterface|MockObject
+     */
     private $updaterMock;
 
-    /** @var ValidatorInterface|MockObject */
+    /**
+     * @var ValidatorInterface|MockObject
+     */
     private $validatorMock;
 
-    /** @var ObjectDetacherInterface|MockObject */
+    /**
+     * @var ObjectDetacherInterface|MockObject
+     */
     private $detacherMock;
 
-    /** @var FilterInterface|MockObject */
+    /**
+     * @var FilterInterface|MockObject
+     */
     private $productFilterMock;
 
-    /** @var AttributeFilterInterface|MockObject */
+    /**
+     * @var AttributeFilterInterface|MockObject
+     */
     private $productAttributeFilterMock;
 
-    /** @var MediaStorer|MockObject */
+    /**
+     * @var MediaStorer|MockObject
+     */
     private $mediaStorerMock;
 
-    /** @var StepExecution|MockObject */
+    /**
+     * @var StepExecution|MockObject
+     */
     private $stepExecutionMock;
 
-    /** @var JobParameters|MockObject */
+    /**
+     * @var JobParameters|MockObject
+     */
     private $jobParametersMock;
 
     protected function setUp(): void
@@ -77,7 +101,8 @@ class PcmtProductProcessorTest extends TestCase
         $this->stepExecutionMock = $this->createMock(StepExecution::class);
         $this->jobParametersMock = $this->createMock(JobParameters::class);
 
-        $this->stepExecutionMock->method('getJobParameters')->willReturn($this->jobParametersMock);
+        $this->stepExecutionMock->method('getJobParameters')
+            ->willReturn($this->jobParametersMock);
 
         $this->processor = new PcmtProductProcessor(
             $this->repositoryMock,
@@ -101,10 +126,12 @@ class PcmtProductProcessorTest extends TestCase
         $this->repositoryMock->method('getIdentifierProperties')
             ->willReturn(['identifier']);
         $firstCallWith = 'enabledComparison';
-        if (!isset($item['enabled'])) {
+        if (! isset($item['enabled'])) {
             $firstCallWith = 'enabled';
         }
-        $this->jobParametersMock->expects($this->at(0))->method('get')->with($firstCallWith);
+        $this->jobParametersMock->expects($this->at(0))
+            ->method('get')
+            ->with($firstCallWith);
 
         $this->processor->process($item);
     }
@@ -115,18 +142,18 @@ class PcmtProductProcessorTest extends TestCase
             'item without enabled' => [
                 'item' => [
                     'identifier' => 'example',
-                    'values'     => [],
-                    'parent'     => '',
-                    'family'     => '',
+                    'values' => [],
+                    'parent' => '',
+                    'family' => '',
                 ],
             ],
-            'item with enabled'    => [
+            'item with enabled' => [
                 'item' => [
                     'identifier' => 'example',
-                    'enabled'    => true,
-                    'values'     => [],
-                    'parent'     => '',
-                    'family'     => '',
+                    'enabled' => true,
+                    'values' => [],
+                    'parent' => '',
+                    'family' => '',
                 ],
             ],
         ];
@@ -146,19 +173,17 @@ class PcmtProductProcessorTest extends TestCase
     public function dataProcessIdentifierException(): array
     {
         return [
-            'identifier is null'    => [
+            'identifier is null' => [
                 [
                     'identifier' => null,
                 ],
             ],
-            'identifier is empty'   => [
+            'identifier is empty' => [
                 [
                     'identifier' => '',
                 ],
             ],
-            'identifier is missing' => [
-                [],
-            ],
+            'identifier is missing' => [[]],
         ];
     }
 }

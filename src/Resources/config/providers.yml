@@ -5,7 +5,6 @@
 ######################################################################
 
 services:
-
     pcmt_connector.job.job_parameters.default_values_provider.pcmt_xlsx_product_import:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
         arguments:

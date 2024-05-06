@@ -16,7 +16,9 @@ use PHPUnit\Framework\TestCase;
 
 class PcmtDatagridViewReaderTest extends TestCase
 {
-    /** @var DatagridViewRepository|MockObject */
+    /**
+     * @var DatagridViewRepository|MockObject
+     */
     protected $datagridViewRepositoryMock;
 
     protected function setUp(): void
@@ -26,12 +28,12 @@ class PcmtDatagridViewReaderTest extends TestCase
 
     /**
      * @dataProvider dataGetResults
-     *
-     * @throws \ReflectionException
      */
     public function testGetResults(array $findAllResults): void
     {
-        $this->datagridViewRepositoryMock->expects($this->once())->method('findAll')->willReturn($findAllResults);
+        $this->datagridViewRepositoryMock->expects($this->once())
+            ->method('findAll')
+            ->willReturn($findAllResults);
         $reader = new PcmtDatagridViewReader($this->datagridViewRepositoryMock);
         $reflection = new \ReflectionClass(get_class($reader));
         $method = $reflection->getMethod('getResults');
@@ -43,12 +45,8 @@ class PcmtDatagridViewReaderTest extends TestCase
     public function dataGetResults(): array
     {
         return [
-            'empty array' => [
-                [],
-            ],
-            'not empty array' => [
-                [0, 1],
-            ],
+            'empty array' => [[]],
+            'not empty array' => [[0, 1]],
         ];
     }
 }

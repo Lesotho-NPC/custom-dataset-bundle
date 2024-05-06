@@ -31,7 +31,7 @@ default:
       - 'tests'
       - 'composer.json'
       - 'docker-compose.yml'
-      - 'ecs.yml'
+      - 'ecs.php'
       - 'phpunit.xml.dist'
 
 .build:

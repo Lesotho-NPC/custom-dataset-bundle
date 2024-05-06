@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace PcmtCustomDatasetBundle\Command;
 
+use MongoDB\Driver\Command;
 use PcmtCustomDatasetBundle\Helper\ReadFilter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
@@ -28,16 +29,22 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
     /**
      * run inside terminal in fpm docker: bin/console $defaultName
      */
-    /** @var string */
+    /**
+     * @var string
+     */
     protected static $defaultName = 'pcmt:custom-dataset:create';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $filesFolderPath;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $tmpAttributeGroupsFile = '/tmp/tmp_2_attribute_groups.xlsx';
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $bundleDir = __DIR__ . '/../';
         $this->filesFolderPath = $bundleDir . 'Resources/fixtures/pcmt_global/import_files/2020-07-08/';
@@ -47,18 +54,18 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
         $bar->setFormat('verbose');
         $bar->start();
         foreach ($importList as $import) {
-            if (0 === strncasecmp($import['fileName'], '/tmp/', 5)) {
+            if (strncasecmp($import['fileName'], '/tmp/', 5) === 0) {
                 $currentFilePath = $import['fileName'];
             } else {
                 $currentFilePath = $this->filesFolderPath . $import['fileName'];
             }
             $totalPath = str_replace('/', '\/', $currentFilePath);
             $arguments = [
-                'code'       => $import['code'],
-                '--no-debug' => true,
-                '--no-log'   => true,
-                '-v'         => true,
-                '--config'   => sprintf('{"filePath": "%s"}', $totalPath),
+                'code' => $import['code'],
+                '--no-debug' => false,
+                '--no-log' => false,
+                '-v' => true,
+                '--config' => sprintf('{"filePath": "%s"}', $totalPath),
             ];
             $output->writeln("\nnow: " . $import['code'] . '...');
             $this->executeCommand($output, $arguments);
@@ -69,6 +76,7 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
         $output->writeln('All data loaded');
         $this->removeTmpFile();
         $output->writeln('Tmp data removed');
+        return Command::Success;
     }
 
     protected function createAttributeGroupsWithoutAttributes(OutputInterface $output): void
@@ -81,7 +89,7 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
         $highestColumn++;
         for ($col = 'A'; $col !== $highestColumn; ++$col) {
             $value = $worksheet->getCell($col . '1')->getFormattedValue();
-            if ('attributes' === $value) {
+            if ($value === 'attributes') {
                 $columnToFilter = $col;
 
                 break;
@@ -100,7 +108,8 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
     private function executeCommand(OutputInterface $output, array $arguments): int
     {
         try {
-            $command = $this->getApplication()->find('akeneo:batch:job');
+            $command = $this->getApplication()
+                ->find('akeneo:batch:job');
             $input = new ArrayInput($arguments);
 
             return $command->run($input, $output);
@@ -113,7 +122,7 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
     private function removeTmpFile(): void
     {
         foreach ($this->getImportList() as $import) {
-            if (0 === strncasecmp($import['fileName'], '/tmp/', 5)) {
+            if (strncasecmp($import['fileName'], '/tmp/', 5) === 0) {
                 unlink($import['fileName']) or die("Couldn't delete file");
             }
         }
@@ -123,47 +132,47 @@ class PcmtCreateCustomDatasetCommand extends ContainerAwareCommand
     {
         return [
             [
-                'code'     => 'xlsx_attribute_group_import',
+                'code' => 'xlsx_attribute_group_import',
                 'fileName' => $this->tmpAttributeGroupsFile,
             ],
             [
-                'code'     => 'xlsx_category_import',
+                'code' => 'xlsx_category_import',
                 'fileName' => '1_categories.xlsx',
             ],
             [
-                'code'     => 'xlsx_attribute_import',
+                'code' => 'xlsx_attribute_import',
                 'fileName' => '3_attributes.xlsx',
             ],
             [
-                'code'     => 'xlsx_attribute_option_import',
+                'code' => 'xlsx_attribute_option_import',
                 'fileName' => '4_attribute_options.xlsx',
             ],
             [
-                'code'     => 'xlsx_family_import',
+                'code' => 'xlsx_family_import',
                 'fileName' => '5_families.xlsx',
             ],
             [
-                'code'     => 'xlsx_family_variant_import',
+                'code' => 'xlsx_family_variant_import',
                 'fileName' => '6_family_variants.xlsx',
             ],
             [
-                'code'     => 'xlsx_product_model_first_import',
+                'code' => 'xlsx_product_model_first_import',
                 'fileName' => '7_product_models.xlsx',
             ],
             [
-                'code'     => 'pcmt_xlsx_product_first_import',
+                'code' => 'pcmt_xlsx_product_first_import',
                 'fileName' => '8_1_products_trade_items_rh.xlsx',
             ],
             [
-                'code'     => 'pcmt_xlsx_product_first_import',
+                'code' => 'pcmt_xlsx_product_first_import',
                 'fileName' => '8_2_products_trade_items_gdsn_queue.xlsx',
             ],
             [
-                'code'     => 'import_map_suppliers_first',
+                'code' => 'import_map_suppliers_first',
                 'fileName' => '9_masterdata_entries_all.xlsx',
             ],
             [
-                'code'     => 'pcmt_xlsx_datagrid_view_import',
+                'code' => 'pcmt_xlsx_datagrid_view_import',
                 'fileName' => '11_datagrid_view.xlsx',
             ],
         ];

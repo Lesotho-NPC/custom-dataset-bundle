@@ -14,13 +14,19 @@ use PHPUnit\Framework\TestCase;
 
 class ReadFilterTest extends TestCase
 {
-    /** @var ReadFilter */
+    /**
+     * @var ReadFilter
+     */
     private $readFilter;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $columnToFilter;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $columnNotToFilter;
 
     protected function setUp(): void
@@ -44,10 +50,10 @@ class ReadFilterTest extends TestCase
         $this->setUp();
 
         return [
-            'first row from column to filter'     => [$this->columnToFilter, 1, true],
-            'next row from column to filter'      => [$this->columnToFilter, 2, false],
+            'first row from column to filter' => [$this->columnToFilter, 1, true],
+            'next row from column to filter' => [$this->columnToFilter, 2, false],
             'first row from column not to filter' => [$this->columnNotToFilter, 1, true],
-            'next row from column not to filter'  => [$this->columnNotToFilter, 2, true],
+            'next row from column not to filter' => [$this->columnNotToFilter, 2, true],
         ];
     }
 }

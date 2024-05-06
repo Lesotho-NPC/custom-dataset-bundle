@@ -17,9 +17,6 @@ class UserMissingException extends PropertyException
     {
         parent::__construct();
         $this->message =
-            sprintf(
-                'There is no user "%s" in the database.',
-                $user
-            );
+            sprintf('There is no user "%s" in the database.', $user);
     }
 }

@@ -13,7 +13,9 @@ use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
 class ReadFilter implements IReadFilter
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $columnToFilter;
 
     public function __construct(string $columnToFilter = 'ColumnToFilter')
@@ -21,12 +23,9 @@ class ReadFilter implements IReadFilter
         $this->columnToFilter = $columnToFilter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function readCell($column, $row, $worksheetName = ''): bool
     {
-        if (1 === $row || $column !== $this->columnToFilter) {
+        if ($row === 1 || $column !== $this->columnToFilter) {
             return true;
         }
 
