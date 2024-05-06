@@ -5,7 +5,6 @@
 ######################################################################
 
 services:
-
     pcmt_connector.job.pcmt_xlsx_product_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -65,7 +64,6 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_root_product_model.import'
                 - '@pim_connector.step.xlsx_sub_product_model.import'
-                - '@pim_connector.step.xlsx_compute_product_models_descendants.import'
                 - '@pim_connector.step.xlsx_product_model.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: 'Pcmt Connector', type: 'import_hidden' }

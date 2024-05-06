@@ -16,10 +16,14 @@ use PHPUnit\Framework\TestCase;
 
 class DatagridViewTest extends TestCase
 {
-    /** @var DatagridView */
+    /**
+     * @var DatagridView
+     */
     private $datagridViewArrayConverter;
 
-    /** @var FieldsRequirementChecker|MockObject */
+    /**
+     * @var FieldsRequirementChecker|MockObject
+     */
     private $fieldChecker;
 
     protected function setUp(): void
@@ -31,20 +35,17 @@ class DatagridViewTest extends TestCase
     public function testConvert(): void
     {
         $item = [
-            'label'          => 1,
-            'owner'          => 2,
+            'label' => 1,
+            'owner' => 2,
             'datagrid_alias' => 3,
-            'columns'        => 4,
+            'columns' => 4,
         ];
-        $requiredArray = [
-            'label',
-            'owner',
-            'datagrid_alias',
-            'columns',
-        ];
-        $this->fieldChecker->expects($this->once())->method('checkFieldsPresence')
+        $requiredArray = ['label', 'owner', 'datagrid_alias', 'columns'];
+        $this->fieldChecker->expects($this->once())
+            ->method('checkFieldsPresence')
             ->with($item, $requiredArray);
-        $this->fieldChecker->expects($this->once())->method('checkFieldsFilling')
+        $this->fieldChecker->expects($this->once())
+            ->method('checkFieldsFilling')
             ->with($item, $requiredArray);
         $this->datagridViewArrayConverter->convert($item);
     }

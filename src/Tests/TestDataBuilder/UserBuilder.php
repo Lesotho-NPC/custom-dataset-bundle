@@ -15,7 +15,9 @@ class UserBuilder
 {
     public const EXAMPLE_USERNAME = 'admin';
 
-    /** @var User */
+    /**
+     * @var User
+     */
     private $user;
 
     public function __construct()

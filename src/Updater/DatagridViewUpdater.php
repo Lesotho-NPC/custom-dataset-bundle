@@ -17,16 +17,19 @@ use PcmtCustomDatasetBundle\Exception\UserMissingException;
 /**
  * Update the datagrid view properties
  *
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class DatagridViewUpdater implements ObjectUpdaterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /**
+     * @var IdentifiableObjectRepositoryInterface
+     */
     protected $userRepository;
 
-    /** @var ObjectUpdaterInterface */
+    /**
+     * @var ObjectUpdaterInterface
+     */
     private $baseDatagridViewUpdater;
 
     public function __construct(
@@ -43,7 +46,7 @@ class DatagridViewUpdater implements ObjectUpdaterInterface
     public function update($datagridView, array $data, array $options = []): ObjectUpdaterInterface
     {
         $user = $this->userRepository->findOneByIdentifier($data['owner']);
-        if (null === $user) {
+        if ($user === null) {
             throw new UserMissingException($data['owner']);
         }
         $this->baseDatagridViewUpdater->update($datagridView, $data, $options);

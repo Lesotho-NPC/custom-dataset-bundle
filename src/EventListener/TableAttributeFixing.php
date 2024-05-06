@@ -15,7 +15,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TableAttributeFixing implements EventSubscriberInterface
 {
-    /** @var Connection */
+    /**
+     * @var Connection
+     */
     private $connection;
 
     public function __construct(Connection $connection)
@@ -23,9 +25,6 @@ class TableAttributeFixing implements EventSubscriberInterface
         $this->connection = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [

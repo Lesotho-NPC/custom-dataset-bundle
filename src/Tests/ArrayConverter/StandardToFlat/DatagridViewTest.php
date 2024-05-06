@@ -29,33 +29,33 @@ class DatagridViewTest extends TestCase
     {
         return [
             'label translations' => [
-                'property'       => 'labels',
-                'data'           => [
+                'property' => 'labels',
+                'data' => [
                     'en_US' => 'Hello World',
-                    'pl'    => 'Witaj świecie',
+                    'pl' => 'Witaj świecie',
                 ],
                 'expectedResult' => [
                     'label-en_US' => 'Hello World',
-                    'label-pl'    => 'Witaj świecie',
+                    'label-pl' => 'Witaj świecie',
                 ],
             ],
             'Some string values' => [
-                'property'       => 'property_1',
-                'data'           => 'property',
+                'property' => 'property_1',
+                'data' => 'property',
                 'expectedResult' => [
                     'property_1' => 'property',
                 ],
             ],
             'Some int values' => [
-                'property'       => 'property_1',
-                'data'           => 1,
+                'property' => 'property_1',
+                'data' => 1,
                 'expectedResult' => [
                     'property_1' => '1',
                 ],
             ],
             'Some null values' => [
-                'property'       => 'property_1',
-                'data'           => null,
+                'property' => 'property_1',
+                'data' => null,
                 'expectedResult' => [
                     'property_1' => '',
                 ],

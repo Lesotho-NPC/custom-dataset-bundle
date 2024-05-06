@@ -21,3 +21,7 @@ coverage:
 .PHONY: ecs
 ecs:
 	docker-compose run php vendor/bin/ecs check src
+
+.PHONY: ecs-fix
+ecs-fix:
+	docker-compose run php vendor/bin/ecs check src --fix

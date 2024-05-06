@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   php:
-    image: 'akeneo/pim-php-dev:5.0'
+    image: 'akeneo/pim-php-dev:6.0'
     environment:
       XDEBUG_MODE: "coverage"
     volumes:

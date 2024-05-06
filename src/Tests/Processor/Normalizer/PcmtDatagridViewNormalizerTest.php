@@ -36,36 +36,28 @@ class PcmtDatagridViewNormalizerTest extends TestCase
         return [
             'full filled data' => [
                 'datagrid with owner' => (new DatagridViewBuilder())->build(),
-                'expected results'    => [
-                    'owner'          => DatagridViewBuilder::EXAMPLE_OWNER_USERNAME,
-                    'label'          => DatagridViewBuilder::EXAMPLE_LABEL,
-                    'type'           => DatagridViewBuilder::EXAMPLE_TYPE,
+                'expected results' => [
+                    'owner' => DatagridViewBuilder::EXAMPLE_OWNER_USERNAME,
+                    'label' => DatagridViewBuilder::EXAMPLE_LABEL,
+                    'type' => DatagridViewBuilder::EXAMPLE_TYPE,
                     'datagrid_alias' => DatagridViewBuilder::EXAMPLE_ALIAS,
-                    'columns'        => DatagridViewBuilder::EXAMPLE_COLUMNS,
-                    'filters'        => DatagridViewBuilder::EXAMPLE_FILTERS,
+                    'columns' => DatagridViewBuilder::EXAMPLE_COLUMNS,
+                    'filters' => DatagridViewBuilder::EXAMPLE_FILTERS,
                 ],
             ],
             'username is empty' => [
                 'datagrid with owner' => (new DatagridViewBuilder())
-                    ->withOwner(
-                        (new UserBuilder())
-                            ->withUsername('')
-                            ->build()
-                    )
+                    ->withOwner((new UserBuilder()) ->withUsername('') ->build())
                     ->build(),
-                'expected results'    => [
+                'expected results' => [
                     'owner' => '',
                 ],
             ],
             'username is null' => [
                 'datagrid with owner' => (new DatagridViewBuilder())
-                    ->withOwner(
-                        (new UserBuilder())
-                            ->withUsername(null)
-                            ->build()
-                    )
+                    ->withOwner((new UserBuilder()) ->withUsername(null) ->build())
                     ->build(),
-                'expected results'    => [
+                'expected results' => [
                     'owner' => '',
                 ],
             ],
@@ -85,26 +77,10 @@ class PcmtDatagridViewNormalizerTest extends TestCase
     public function dataSupportsNormalization(): array
     {
         return [
-            [
-                $this->createMock(DatagridView::class),
-                'internal_api',
-                true,
-            ],
-            [
-                $this->createMock(DatagridView::class),
-                'standard',
-                false,
-            ],
-            [
-                $this->createMock(EntityWithAssociationsInterface::class),
-                'internal_api',
-                false,
-            ],
-            [
-                $this->createMock(AttributeConverter::class),
-                'internal_api',
-                false,
-            ],
+            [$this->createMock(DatagridView::class), 'internal_api', true],
+            [$this->createMock(DatagridView::class), 'standard', false],
+            [$this->createMock(EntityWithAssociationsInterface::class), 'internal_api', false],
+            [$this->createMock(AttributeConverter::class), 'internal_api', false],
         ];
     }
 }

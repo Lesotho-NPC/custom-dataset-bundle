@@ -15,23 +15,26 @@ use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 class DatagridViewBuilder
 {
     public const EXAMPLE_OWNER_USERNAME = 'Example Owner';
+
     public const EXAMPLE_LABEL = 'Custom label';
+
     public const EXAMPLE_TYPE = 'My type';
+
     public const EXAMPLE_ALIAS = 'Some alias';
+
     public const EXAMPLE_COLUMNS = 'one,two,three,four';
+
     public const EXAMPLE_FILTERS = 'some';
 
-    /** @var DatagridView */
+    /**
+     * @var DatagridView
+     */
     private $datagridView;
 
     public function __construct()
     {
         $this->datagridView = new DatagridView();
-        $this->datagridView->setOwner(
-            (new UserBuilder())
-                ->withUsername(self::EXAMPLE_OWNER_USERNAME)
-                ->build()
-        );
+        $this->datagridView->setOwner((new UserBuilder()) ->withUsername(self::EXAMPLE_OWNER_USERNAME) ->build());
         $this->datagridView->setFilters(self::EXAMPLE_FILTERS);
         $this->datagridView->setLabel(self::EXAMPLE_LABEL);
         $this->datagridView->setType(self::EXAMPLE_TYPE);

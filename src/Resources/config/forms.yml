@@ -5,7 +5,6 @@
 ######################################################################
 
 services:
-
   pcmt_enrichment.provider.form.job_instance:
     class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
     arguments:

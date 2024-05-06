@@ -65,6 +65,11 @@ jobs:
         alias:     change_parent_product
         label:     Change parent product model
         type:      mass_edit
+    convert_to_simple_products:
+        connector: Akeneo Mass Edit Connector
+        alias:     convert_to_simple_products
+        label:     Convert to simple products
+        type:      mass_edit
     delete_products_and_product_models:
         connector: Akeneo Mass Edit Connector
         alias:     delete_products_and_product_models
@@ -116,11 +121,6 @@ jobs:
             filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
             with_media:   true
-    compute_product_models_descendants:
-        connector: internal
-        alias:     compute_product_models_descendants
-        label:     Compute product models descendants
-        type:      compute_product_models_descendants
     compute_completeness_of_products_family:
         connector: internal
         alias:     compute_completeness_of_products_family
@@ -131,6 +131,22 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute variant structure changes
         type:      compute_family_variant_structure_changes
+    remove_non_existing_product_values:
+        connector: internal
+        alias:     remove_non_existing_product_values
+        label:     Remove non existing product values
+        type:      remove_non_existing_product_values
+    clean_removed_attribute_job:
+        connector: internal
+        alias: clean_removed_attribute_job
+        label: Cleaning removed attribute values
+        type: clean_removed_attribute_job
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale
+
     #PCMT
     #xlsx_imports
     #1
@@ -520,7 +536,6 @@ jobs:
         type: import_hidden
         configuration:
             xmlFilePath: ''
-            xmlDirPath: ''
     #14
     reference_data_download_xmls:
         connector: Pcmt Connector

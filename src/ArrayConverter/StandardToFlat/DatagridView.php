@@ -15,15 +15,11 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimple
 /**
  * Convert standard format to flat format for category
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class DatagridView extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function convertProperty($property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
