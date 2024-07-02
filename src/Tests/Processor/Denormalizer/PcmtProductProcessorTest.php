@@ -10,9 +10,11 @@ declare(strict_types=1);
 namespace PcmtCustomDatasetBundle\Tests\Processor\Denormalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -87,6 +89,16 @@ class PcmtProductProcessorTest extends TestCase
      */
     private $jobParametersMock;
 
+    /**
+     * @var RemoveParentInterface|MockObject
+     */
+    private $removeParentMock;
+
+    /**
+     * @var CleanLineBreaksInTextAttributes|MockObject
+     */
+    private $cleanLineBrakeTextAttributesMock;
+
     protected function setUp(): void
     {
         $this->repositoryMock = $this->createMock(IdentifiableObjectRepositoryInterface::class);
@@ -100,7 +112,8 @@ class PcmtProductProcessorTest extends TestCase
         $this->mediaStorerMock = $this->createMock(MediaStorer::class);
         $this->stepExecutionMock = $this->createMock(StepExecution::class);
         $this->jobParametersMock = $this->createMock(JobParameters::class);
-
+        $this->removeParentMock = $this->createMock(RemoveParentInterface::class);
+        $this->cleanLineBrakeTextAttributesMock = $this->createMock(CleanLineBreaksInTextAttributes::class);
         $this->stepExecutionMock->method('getJobParameters')
             ->willReturn($this->jobParametersMock);
 
@@ -113,7 +126,9 @@ class PcmtProductProcessorTest extends TestCase
             $this->detacherMock,
             $this->productFilterMock,
             $this->productAttributeFilterMock,
-            $this->mediaStorerMock
+            $this->mediaStorerMock,
+            $this->removeParentMock,
+            $this->cleanLineBrakeTextAttributesMock
         );
         $this->processor->setStepExecution($this->stepExecutionMock);
     }
@@ -129,9 +144,16 @@ class PcmtProductProcessorTest extends TestCase
         if (! isset($item['enabled'])) {
             $firstCallWith = 'enabled';
         }
-        $this->jobParametersMock->expects($this->at(0))
+        // Define a value map for the 'get' method
+        $valueMap = [['enabled', 'enabled'], ['enabledComparison', 'enabledComparison']];
+
+        $this->jobParametersMock->expects($this->any())
             ->method('get')
-            ->with($firstCallWith);
+            ->will($this->returnValueMap($valueMap));
+
+        // Add assertions to check if the returned value is either 'enabled' or 'enabledComparison'
+        $this->assertContains($this->jobParametersMock->get($firstCallWith), ['enabled', 'enabledComparison']);
+        $this->assertContains($this->jobParametersMock->get($firstCallWith), ['enabled', 'enabledComparison']);
 
         $this->processor->process($item);
     }

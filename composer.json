@@ -19,18 +19,34 @@
       "PcmtCustomDatasetBundle\\Tests\\": "src/Tests/"
     }
   },
+  
   "repositories": [
     {
+        "type": "vcs",
+        "url": "https://gitlab.com/pcmt/shared-bundle.git"
+    },
+    {
       "type": "vcs",
-      "url": "https://gitlab.com/pcmt/shared-bundle.git",
-      "branch": "master",
-      "no-api": true
+      "url": "https://gitlab.com/pcmt/core-bundle.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://gitlab.com/pcmt/draft-bundle.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://gitlab.com/pcmt/custom-entity-bundle.git"
     }
   ],
   "require": {
     "php": "8.0.*",
     "akeneo/pim-community-dev": "^6.0",
-    "pcmt/shared-bundle": "dev-master@dev"
+    "pcmt/shared-bundle": "dev-master@dev",
+    "sabre/xml": "dev-master",
+    "pcmt/core-bundle": "dev-master@dev",
+    "phpoffice/phpspreadsheet": "^2.1",
+    "akeneo-labs/custom-entity-bundle": "dev-master@dev",
+    "pcmt/draft-bundle": "dev-master@dev"
   },
   "require-dev": {
     "phpunit/phpunit": "^9",
@@ -40,5 +56,6 @@
     "allow-plugins": {
       "symfony/flex": true
     }
-  }
+  },
+  "minimum-stability": "dev"
 }
