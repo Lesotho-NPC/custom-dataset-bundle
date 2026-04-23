@@ -1,0 +1,2 @@
+code;type;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;decimals_allowed;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;date_min;date_max;max_file_size;minimum_input_length;sort_order;localizable;scopable;available_locales;unique_variant_axes;label-en_US;label-fr_FR
+sku;pim_catalog_identifier;other;1;1;;;;;;255;;;;;;;;;1;0;0;;0;SKU;SKU
