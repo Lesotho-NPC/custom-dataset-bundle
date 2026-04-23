@@ -1,0 +1,5 @@
+locales:
+  en_US:
+    currency: USD
+  en_LSL:
+    currentcy: LSL
