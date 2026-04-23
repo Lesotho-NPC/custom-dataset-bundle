@@ -1,7 +1,5 @@
 locales:
-    en_US:
-        currency: USD
-    fr_FR:
-        currency: EUR
-    de_DE:
-        currency: EUR
+  en_US:
+    currency: USD
+  en_LSL:
+    currentcy: LSL
