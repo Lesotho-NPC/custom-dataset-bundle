@@ -1,6 +1,6 @@
 code;activated
-USD;1
-EUR;1
+USD;0
+EUR;0
 ADP;0
 AED;0
 AFA;0
@@ -146,7 +146,7 @@ LAK;0
 LBP;0
 LKR;0
 LRD;0
-LSL;0
+LSL;1
 LTL;0
 LTT;0
 LUC;0
